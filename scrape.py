@@ -21,18 +21,21 @@ while(current_page <= end_page_num):
     for tr in list_tr:
         dataframe ={}
         try:
-            dataframe["rest_name"] = (tr.find("a",attrs={"class": "result-title hover_feedback zred bold ln24 fontsize0"})).text.replace('\n', ' ')
-            dataframe["rest_address"] = (tr.find("div",attrs={"class": "col-m-16 search-result-address grey-text nowrap ln22"})).text.replace('\n', ' ')
-            dataframe["cuisine_type"] = (tr.find("span",attrs={"class":"col-s-11 col-m-12 nowrap pl0"})).text.replace('\n', ' ')
-            dataframe["rest_cost"] = (tr.find("span", attrs={"itemprop": "priceRange"})).text.replace('\n', ' ')
+            dataframe["name"] = (tr.find("a",attrs={"class": "result-title hover_feedback zred bold ln24 fontsize0"})).text.replace('\n', ' ')
+            dataframe["address"] = (tr.find("div",attrs={"class": "col-m-16 search-result-address grey-text nowrap ln22"})).text.replace('\n', ' ')
+            dataframe["food_type"] = (tr.find("span",attrs={"class":"col-s-11 col-m-12 nowrap pl0"})).text.replace('\n', ' ')
+            dataframe["food_type"] = dataframe["food_type"].split(",")
+            dataframe["cost"] = (tr.find("span", attrs={"itemprop": "priceRange"})).text.replace('\n', ' ')
         except AttributeError:
             #del dataframe
-            dataframe["rest_cost"] = "Unknown"
+            dataframe["cost"] = "Unknown"
         #else:
             #if dataframe["cuisine_type"] == "" or dataframe["rest_name"] == "" or dataframe["rest_address"] == "":
                 #del dataframe
-        if dataframe["cuisine_type"] == "":
-            dataframe["cuisine_type"] = "Unknown"
+        #if dataframe["food_type"] == "":
+        if '' in dataframe["food_type"]:
+            dataframe["food_type"] = "Unknown"
+        
         list_rest.append(dataframe)
     all_rest += list_rest
     print(current_page)
